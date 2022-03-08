@@ -5,6 +5,7 @@ import 'model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+
 Future<Album> fetchAlbum() async {
   final response = await http.get(Uri.parse(
       'https://angular-argon-331323-default-rtdb.firebaseio.com/house.json'));
@@ -52,15 +53,19 @@ class _MyAppState extends State {
   final TextEditingController controller4 = TextEditingController();
   final TextEditingController controller5 = TextEditingController();
   late Future<Album> futureAlbum;
+  Widget total(){if(rateczk==null) {return const CircularProgressIndicator();} else {return FutureBuilder(future:rateczk, builder: (context,snapshot){return Text("${snapshot.data!}");}); }}
 
   var text1, text2, text3, text4, text5;
-  late var rateczk, ratepln, raterub, ratekzt;
+  var rateczk, ratepln, raterub, ratekzt;
   @override
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
-    rateczk =
-        getraterub()["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
+     getraterub().whenComplete((){
+        setState(() {
+        rateczk=getraterub();
+       //raterub=rateczk["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
+      }); });
   }
 
   @override
@@ -76,7 +81,7 @@ class _MyAppState extends State {
           textAlign: TextAlign.center,
           child: Center(
             child: Column(
-              children: [
+              children: [total(),
                 FutureBuilder<Album>(
                   future: futureAlbum,
                   builder: (context, snapshot) {
@@ -150,6 +155,7 @@ class _MyAppState extends State {
                                 setState(() {
                                   futureAlbum = updateAlbum(
                                       text1, text2, text3, text4, text5);
+                                      
                                 });
                               },
                               child: const Text('Update Data'),
