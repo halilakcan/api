@@ -5,16 +5,30 @@ import 'model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
 Future<Album> fetchAlbum() async {
   final response = await http.get(Uri.parse(
       'https://angular-argon-331323-default-rtdb.firebaseio.com/house.json'));
   return Album.fromJson(jsonDecode(response.body));
 }
 
+getratepln() async {
+  final response = await http.get(Uri.parse(
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=PLN&apikey=7UK1NW1UZ8NZQT07'));
+  return jsonDecode(response.body);
+}
 getraterub() async {
   final response = await http.get(Uri.parse(
       'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=RUB&apikey=7UK1NW1UZ8NZQT07'));
+  return jsonDecode(response.body);
+}
+getrateczk() async {
+  final response = await http.get(Uri.parse(
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=CZK&apikey=7UK1NW1UZ8NZQT07'));
+  return jsonDecode(response.body);
+}
+getratekzt() async {
+  final response = await http.get(Uri.parse(
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=KZT&apikey=7UK1NW1UZ8NZQT07'));
   return jsonDecode(response.body);
 }
 
@@ -53,35 +67,54 @@ class _MyAppState extends State {
   final TextEditingController controller4 = TextEditingController();
   final TextEditingController controller5 = TextEditingController();
   late Future<Album> futureAlbum;
-  Widget total(){if(rateczk==null) {return const CircularProgressIndicator();} else {return FutureBuilder(future:rateczk, builder: (context,snapshot){return Text("${snapshot.data!}");}); }}
+ Widget total(){if(sum==null) {return const CircularProgressIndicator();} else {return Text("TOTAL EUR: $sum"); }}
 
   var text1, text2, text3, text4, text5;
-  var rateczk, ratepln, raterub, ratekzt;
+  var rateczk, ratepln, raterub, ratekzt,sum;
+  void func() async {
+    var data1 = await getratepln();
+    var data2 = await getraterub();
+    var data3 = await getrateczk();
+    var data4 = await getratekzt();
+    var data5 = await fetchAlbum();
+    setState(() {
+      ratepln = double.parse(data1["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
+      raterub = double.parse(data2["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
+      rateczk = double.parse(data3["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
+      ratekzt = double.parse(data4["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
+      text1=data5.pln;
+      text2=data5.eur;
+      text3=data5.rub;
+      text4=data5.czk;
+      text5=data5.kzt;
+      sum=text1/ratepln+text2+text3/raterub+text4/rateczk+text5/ratekzt;
+      sum=double.parse((sum).toStringAsFixed(2));
+    });
+  }
+
+
   @override
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
-     getraterub().whenComplete((){
-        setState(() {
-        rateczk=getraterub();
-       //raterub=rateczk["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-      }); });
+    func();
   }
 
   @override
   build(context) {
     return MaterialApp(
-      title: 'Fetch Data Example',
+      title: 'Akcan House Investment',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Fetch Data Example'),
+          title: const Text('Home Investment'),
         ),
         body: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline2!,
           textAlign: TextAlign.center,
           child: Center(
             child: Column(
-              children: [total(),
+              children: [
+                total(),
                 FutureBuilder<Album>(
                   future: futureAlbum,
                   builder: (context, snapshot) {
@@ -155,7 +188,7 @@ class _MyAppState extends State {
                                 setState(() {
                                   futureAlbum = updateAlbum(
                                       text1, text2, text3, text4, text5);
-                                      
+                                      func();
                                 });
                               },
                               child: const Text('Update Data'),
