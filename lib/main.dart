@@ -67,7 +67,7 @@ class _MyAppState extends State {
   final TextEditingController controller4 = TextEditingController();
   final TextEditingController controller5 = TextEditingController();
   late Future<Album> futureAlbum;
- Widget total(){if(sum==null) {return const CircularProgressIndicator();} else {return Text("TOTAL EUR: $sum"); }}
+ Widget total(){if(sum==null) {return const CircularProgressIndicator();} else {return Text("SUM: ${sum}€"); }}
 
   var text1, text2, text3, text4, text5;
   var rateczk, ratepln, raterub, ratekzt,sum;
