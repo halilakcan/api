@@ -4,6 +4,7 @@ class Album {
   double czk;
   double rub;
   double kzt;
+  double usd;
 
   Album({
     required this.pln,
@@ -11,6 +12,7 @@ class Album {
     required this.czk,
     required this.rub,
     required this.kzt,
+    required this.usd,
   });
 
   factory Album.fromJson(json) {
@@ -20,6 +22,7 @@ class Album {
       czk: json['CZK'],
       rub: json['RUB'],
       kzt: json['KZT'],
+      usd: json['USD'],
     );
   }
 }
