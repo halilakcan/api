@@ -48,9 +48,14 @@ getrateusd() async {
       'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=7UK1NW1UZ8NZQT07'));
   return jsonDecode(response.body);
 }
+getratetry() async {
+  final response = await http.get(Uri.parse(
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=TRY&apikey=7UK1NW1UZ8NZQT07'));
+  return jsonDecode(response.body);
+}
 
 Future<Album> updateAlbum(double text1, double text2, double text3,
-    double text4, double text5, double text6) async {
+    double text4, double text5, double text6,double text7) async {
   var url;
   if (_MyAppState.selectedIndex == 0) {
     url = Uri.parse(
@@ -70,7 +75,8 @@ Future<Album> updateAlbum(double text1, double text2, double text3,
       "RUB": text3,
       "CZK": text4,
       "KZT": text5,
-      "USD": text6
+      "USD": text6,
+        "TRY": text7
     }),
   );
   return Album.fromJson(jsonDecode(response.body));
@@ -92,6 +98,7 @@ class _MyAppState extends State {
   final TextEditingController controller4 = TextEditingController();
   final TextEditingController controller5 = TextEditingController();
   final TextEditingController controller6 = TextEditingController();
+  final TextEditingController controller7 = TextEditingController();
   late Future<Album> futureAlbum;
   Widget total() {
     if (sum == null) {
@@ -156,28 +163,36 @@ class _MyAppState extends State {
               hintText: 'Enter USD Value',
             ),
           ),
+           Text("TRY: $text7"),
+          TextField(
+            controller: controller6,
+            decoration: const InputDecoration(
+              hintText: 'Enter TRY Value',
+            ),
+          ),
         ],
       );
     }
   }
 
-  var text1, text2, text3, text4, text5, text6;
-  var rateczk, ratepln, raterub, ratekzt, rateusd, sum;
+  var text1, text2, text3, text4, text5, text6,text7;
+  var rateczk, ratepln, raterub, ratekzt, rateusd, ratetry,sum;
   void account() async {
-    var data6 = await fetchAlbum();
+    var data7 = await fetchAlbum();
     setState(() {
-      text1 = data6.pln;
-      text2 = data6.eur;
-      text3 = data6.rub;
-      text4 = data6.czk;
-      text5 = data6.kzt;
-      text6 = data6.usd;
+      text1 = data7.pln;
+      text2 = data7.eur;
+      text3 = data7.rub;
+      text4 = data7.czk;
+      text5 = data7.kzt;
+      text6 = data7.usd;
+      text7 = data7.trl;
     });
   }
 
   void update(double text1, double text2, double text3, double text4,
-      double text5, double text6) async {
-    await updateAlbum(text1, text2, text3, text4, text5, text6);
+      double text5, double text6,double text7) async {
+    await updateAlbum(text1, text2, text3, text4, text5, text6,text7);
     setState(() {
       account();
     });
@@ -189,6 +204,7 @@ class _MyAppState extends State {
     var data3 = await getrateczk();
     var data4 = await getratekzt();
     var data5 = await getrateusd();
+    var data6 = await getratetry();
 
     setState(() {
       ratepln = double.parse(
@@ -201,13 +217,16 @@ class _MyAppState extends State {
           data4["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
       rateusd = double.parse(
           data5["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
+ratetry = double.parse(
+          data6["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
 
       sum = text1 / ratepln +
           text2 +
           text3 / raterub +
           text4 / rateczk +
           text5 / ratekzt +
-          text6 / rateusd;
+          text6 / rateusd+
+            text7 / ratetry;
       sum = double.parse((sum).toStringAsFixed(2));
     });
   }
@@ -217,6 +236,8 @@ class _MyAppState extends State {
   void onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
+      account();
+      summation();
     });
   }
 
@@ -233,7 +254,7 @@ class _MyAppState extends State {
       title: 'Akcan House Investment',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Financial Status and Home Investment'),
+          title: const Text('Financial Status and Investment'),
         ),
         body: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline4!,
@@ -266,22 +287,17 @@ class _MyAppState extends State {
                         if (controller6.text != '') {
                           text6 = double.parse(controller6.text);
                         }
+                         if (controller7.text != '') {
+                          text7 = double.parse(controller7.text);
+                        }
                         setState(() {
-                          update(text1, text2, text3, text4, text5, text6);
+                          update(text1, text2, text3, text4, text5, text6,text7);
                           summation();
                         });
                       },
                       child: const Text('Update Data'),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          account();
-                          summation();
-                        });
-                      },
-                      child: const Text('Update Page'),
-                    ),
+                   
                   ],
                 ),
               ],
