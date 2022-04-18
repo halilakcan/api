@@ -6,7 +6,7 @@ import 'model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<Album> fetchAlbum() async {
+Future<Account> fetchAlbum() async {
   var url;
   if (_MyAppState.selectedIndex == 0) {
     url = Uri.parse(
@@ -16,46 +16,72 @@ Future<Album> fetchAlbum() async {
         'https://angular-argon-331323-default-rtdb.firebaseio.com/debt.json');
   }
   final response = await http.get(url);
-  return Album.fromJson(jsonDecode(response.body));
+  return Account.fromJson(jsonDecode(response.body));
 }
 
-getratepln() async {
+Future<Rate> localgetcourse() async {
+  final response = await http.get(Uri.parse(
+      'https://angular-argon-331323-default-rtdb.firebaseio.com/course.json'));
+  return Rate.fromJson(jsonDecode(response.body));
+}
+
+localputcourse(double rateczk, double ratepln, double raterub, double ratekzt,
+    double rateusd, double ratetry) async {
+  await http.patch(
+    Uri.parse(
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/course.json'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, double>{
+      "RATEPLN": ratepln,
+      "RATERUB": raterub,
+      "RATECZK": rateczk,
+      "RATEKZT": ratekzt,
+      "RATEUSD": rateusd,
+      "RATETRY": ratetry
+    }),
+  );
+}
+
+Future<Exchange> getratepln() async {
   final response = await http.get(Uri.parse(
       'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=PLN&apikey=7UK1NW1UZ8NZQT07'));
-  return jsonDecode(response.body);
+  return Exchange.fromJson(jsonDecode(response.body));
 }
 
-getraterub() async {
+Future<Exchange> getraterub() async {
   final response = await http.get(Uri.parse(
       'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=RUB&apikey=7UK1NW1UZ8NZQT07'));
-  return jsonDecode(response.body);
+  return Exchange.fromJson(jsonDecode(response.body));
 }
 
-getrateczk() async {
+Future<Exchange> getrateczk() async {
   final response = await http.get(Uri.parse(
       'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=CZK&apikey=7UK1NW1UZ8NZQT07'));
-  return jsonDecode(response.body);
+  return Exchange.fromJson(jsonDecode(response.body));
 }
 
-getratekzt() async {
+Future<Exchange> getratekzt() async {
   final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=KZT&apikey=7UK1NW1UZ8NZQT07'));
-  return jsonDecode(response.body);
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=KZT&apikey=LLBSGY9YH9GJ142T'));
+  return Exchange.fromJson(jsonDecode(response.body));
 }
 
-getrateusd() async {
+Future<Exchange> getrateusd() async {
   final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=7UK1NW1UZ8NZQT07'));
-  return jsonDecode(response.body);
-}
-getratetry() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=TRY&apikey=7UK1NW1UZ8NZQT07'));
-  return jsonDecode(response.body);
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=LLBSGY9YH9GJ142T'));
+  return Exchange.fromJson(jsonDecode(response.body));
 }
 
-Future<Album> updateAlbum(double text1, double text2, double text3,
-    double text4, double text5, double text6,double text7) async {
+Future<Exchange> getratetry() async {
+  final response = await http.get(Uri.parse(
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=TRY&apikey=LLBSGY9YH9GJ142T'));
+  return Exchange.fromJson(jsonDecode(response.body));
+}
+
+updateAlbum(double text1, double text2, double text3, double text4,
+    double text5, double text6, double text7) async {
   var url;
   if (_MyAppState.selectedIndex == 0) {
     url = Uri.parse(
@@ -64,7 +90,7 @@ Future<Album> updateAlbum(double text1, double text2, double text3,
     url = Uri.parse(
         'https://angular-argon-331323-default-rtdb.firebaseio.com/debt.json');
   }
-  final response = await http.patch(
+  await http.patch(
     url,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -76,10 +102,9 @@ Future<Album> updateAlbum(double text1, double text2, double text3,
       "CZK": text4,
       "KZT": text5,
       "USD": text6,
-        "TRY": text7
+      "TRY": text7
     }),
   );
-  return Album.fromJson(jsonDecode(response.body));
 }
 
 void main() => runApp(const MyApp());
@@ -99,7 +124,56 @@ class _MyAppState extends State {
   final TextEditingController controller5 = TextEditingController();
   final TextEditingController controller6 = TextEditingController();
   final TextEditingController controller7 = TextEditingController();
-  late Future<Album> futureAlbum;
+  late Future<Account> futureAccount;
+  late Future<Rate> futureRate;
+  Widget ratetr() {
+    if (ratetry == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(ratetry.toStringAsFixed(2));
+    }
+  }
+
+  Widget ratepl() {
+    if (ratepln == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(ratepln.toStringAsFixed(2));
+    }
+  }
+
+  Widget rateus() {
+    if (rateusd == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(rateusd.toStringAsFixed(2));
+    }
+  }
+
+  Widget rateru() {
+    if (raterub == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(raterub.toStringAsFixed(2));
+    }
+  }
+
+  Widget ratekz() {
+    if (ratekzt == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(ratekzt.toStringAsFixed(2));
+    }
+  }
+
+  Widget ratecz() {
+    if (rateczk == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(rateczk.toStringAsFixed(2));
+    }
+  }
+
   Widget total() {
     if (sum == null) {
       return Row(
@@ -121,51 +195,69 @@ class _MyAppState extends State {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("PLN: $text1"),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Text("PLN: $text1 / RATE: "),
+            ratepl(),
+          ]),
           TextField(
             controller: controller1,
             decoration: const InputDecoration(
               hintText: 'Enter PLN Value',
             ),
           ),
-          Text("EUR: $text2"),
+          Text("EUR: $text2 / RATE: 1.00"),
           TextField(
             controller: controller2,
             decoration: const InputDecoration(
               hintText: 'Enter EUR Value',
             ),
           ),
-          Text("RUB: $text3"),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Text("RUB: $text3 / RATE: "),
+            rateru(),
+          ]),
           TextField(
             controller: controller3,
             decoration: const InputDecoration(
               hintText: 'Enter RUB Value',
             ),
           ),
-          Text("CZK: $text4"),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Text("CZK: $text4 / RATE: "),
+            ratecz(),
+          ]),
           TextField(
             controller: controller4,
             decoration: const InputDecoration(
               hintText: 'Enter CZK Value',
             ),
           ),
-          Text("KZT: $text5"),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Text("KZT: $text5 / RATE: "),
+            ratekz(),
+          ]),
           TextField(
             controller: controller5,
             decoration: const InputDecoration(
               hintText: 'Enter KZT Value',
             ),
           ),
-          Text("USD: $text6"),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Text("USD: $text6 / RATE: "),
+            rateus(),
+          ]),
           TextField(
             controller: controller6,
             decoration: const InputDecoration(
               hintText: 'Enter USD Value',
             ),
           ),
-           Text("TRY: $text7"),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Text("TRY: $text7 / RATE: "),
+            ratetr(),
+          ]),
           TextField(
-            controller: controller6,
+            controller: controller7,
             decoration: const InputDecoration(
               hintText: 'Enter TRY Value',
             ),
@@ -175,10 +267,18 @@ class _MyAppState extends State {
     }
   }
 
-  var text1, text2, text3, text4, text5, text6,text7;
-  var rateczk, ratepln, raterub, ratekzt, rateusd, ratetry,sum;
+  var text1, text2, text3, text4, text5, text6, text7;
+  var rateczk, ratepln, raterub, ratekzt, rateusd, ratetry, sum;
+  var localrateczk,
+      localratepln,
+      localraterub,
+      localratekzt,
+      localrateusd,
+      localratetry;
   void account() async {
     var data7 = await fetchAlbum();
+    var data8 = await localgetcourse();
+
     setState(() {
       text1 = data7.pln;
       text2 = data7.eur;
@@ -187,47 +287,51 @@ class _MyAppState extends State {
       text5 = data7.kzt;
       text6 = data7.usd;
       text7 = data7.trl;
+      localrateczk = data8.rateczk;
+      localratepln = data8.ratepln;
+      localraterub = data8.raterub;
+      localratekzt = data8.ratekzt;
+      localrateusd = data8.rateusd;
+      localratetry = data8.ratetry;
+      sum = text1 / localratepln +
+          text2 +
+          text3 / localraterub +
+          text4 / localrateczk +
+          text5 / localratekzt +
+          text6 / localrateusd +
+          text7 / localratetry;
+      sum = double.parse((sum).toStringAsFixed(2));
     });
   }
 
   void update(double text1, double text2, double text3, double text4,
-      double text5, double text6,double text7) async {
-    await updateAlbum(text1, text2, text3, text4, text5, text6,text7);
+      double text5, double text6, double text7) async {
+    await updateAlbum(text1, text2, text3, text4, text5, text6, text7);
     setState(() {
       account();
     });
   }
 
-  void summation() async {
+  void putcourse(double rateczk, double ratepln, double raterub, double ratekzt,
+      double rateusd, double ratetry) async {
+    await localputcourse(rateczk, ratepln, raterub, ratekzt, rateusd, ratetry);
+    setState(() {});
+  }
+
+  void getcourse() async {
     var data1 = await getratepln();
     var data2 = await getraterub();
     var data3 = await getrateczk();
     var data4 = await getratekzt();
     var data5 = await getrateusd();
     var data6 = await getratetry();
-
     setState(() {
-      ratepln = double.parse(
-          data1["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-      raterub = double.parse(
-          data2["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-      rateczk = double.parse(
-          data3["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-      ratekzt = double.parse(
-          data4["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-      rateusd = double.parse(
-          data5["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-ratetry = double.parse(
-          data6["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-
-      sum = text1 / ratepln +
-          text2 +
-          text3 / raterub +
-          text4 / rateczk +
-          text5 / ratekzt +
-          text6 / rateusd+
-            text7 / ratetry;
-      sum = double.parse((sum).toStringAsFixed(2));
+      ratepln = double.parse(data1.rate);
+      raterub = double.parse(data2.rate);
+      rateczk = double.parse(data3.rate);
+      ratekzt = double.parse(data4.rate);
+      rateusd = double.parse(data5.rate);
+      ratetry = double.parse(data6.rate);
     });
   }
 
@@ -237,7 +341,6 @@ ratetry = double.parse(
     setState(() {
       selectedIndex = index;
       account();
-      summation();
     });
   }
 
@@ -245,7 +348,7 @@ ratetry = double.parse(
   void initState() {
     super.initState();
     account();
-    summation();
+    getcourse();
   }
 
   @override
@@ -254,7 +357,7 @@ ratetry = double.parse(
       title: 'Akcan House Investment',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Financial Status and Investment'),
+          title: const Text('Financial Status and Home Investment'),
         ),
         body: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline4!,
@@ -287,17 +390,20 @@ ratetry = double.parse(
                         if (controller6.text != '') {
                           text6 = double.parse(controller6.text);
                         }
-                         if (controller7.text != '') {
+                        if (controller7.text != '') {
                           text7 = double.parse(controller7.text);
                         }
                         setState(() {
-                          update(text1, text2, text3, text4, text5, text6,text7);
-                          summation();
+                          update(
+                              text1, text2, text3, text4, text5, text6, text7);
+                          if (ratetry != null) {
+                            putcourse(rateczk, ratepln, raterub, ratekzt,
+                                rateusd, ratetry);
+                          }
                         });
                       },
                       child: const Text('Update Data'),
                     ),
-                   
                   ],
                 ),
               ],
