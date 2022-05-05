@@ -46,13 +46,13 @@ localputcourse(double rateczk, double ratepln, double raterub, double ratekzt,
 
 Future<Exchange> getratepln() async {
   final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=PLN&apikey=7UK1NW1UZ8NZQT07'));
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=PLN&apikey=46CFPZKHE0HIYEQP'));
   return Exchange.fromJson(jsonDecode(response.body));
 }
 
 Future<Exchange> getraterub() async {
   final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=RUB&apikey=7UK1NW1UZ8NZQT07'));
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=RUB&apikey=PE2UILGQOUKOW3S9'));
   return Exchange.fromJson(jsonDecode(response.body));
 }
 
@@ -64,13 +64,13 @@ Future<Exchange> getrateczk() async {
 
 Future<Exchange> getratekzt() async {
   final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=KZT&apikey=LLBSGY9YH9GJ142T'));
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=KZT&apikey=6LGSV7RUCXB7IWCI'));
   return Exchange.fromJson(jsonDecode(response.body));
 }
 
 Future<Exchange> getrateusd() async {
   final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=LLBSGY9YH9GJ142T'));
+      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=OK0GZTWOMFTDP1ZE'));
   return Exchange.fromJson(jsonDecode(response.body));
 }
 
@@ -205,7 +205,7 @@ class _MyAppState extends State {
               hintText: 'Enter PLN Value',
             ),
           ),
-          Text("EUR: $text2 / RATE: 1.00"),
+          Text("EUR: $text2"),
           TextField(
             controller: controller2,
             decoration: const InputDecoration(
