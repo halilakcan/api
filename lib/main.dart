@@ -25,61 +25,6 @@ Future<Rate> localgetcourse() async {
   return Rate.fromJson(jsonDecode(response.body));
 }
 
-localputcourse(double rateczk, double ratepln, double raterub, double ratekzt,
-    double rateusd, double ratetry) async {
-  await http.patch(
-    Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/course.json'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, double>{
-      "RATEPLN": ratepln,
-      "RATERUB": raterub,
-      "RATECZK": rateczk,
-      "RATEKZT": ratekzt,
-      "RATEUSD": rateusd,
-      "RATETRY": ratetry
-    }),
-  );
-}
-
-Future<Exchange> getratepln() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=PLN&apikey=46CFPZKHE0HIYEQP'));
-  return Exchange.fromJson(jsonDecode(response.body));
-}
-
-Future<Exchange> getraterub() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=RUB&apikey=PE2UILGQOUKOW3S9'));
-  return Exchange.fromJson(jsonDecode(response.body));
-}
-
-Future<Exchange> getrateczk() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=CZK&apikey=7UK1NW1UZ8NZQT07'));
-  return Exchange.fromJson(jsonDecode(response.body));
-}
-
-Future<Exchange> getratekzt() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=KZT&apikey=6LGSV7RUCXB7IWCI'));
-  return Exchange.fromJson(jsonDecode(response.body));
-}
-
-Future<Exchange> getrateusd() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=USD&apikey=OK0GZTWOMFTDP1ZE'));
-  return Exchange.fromJson(jsonDecode(response.body));
-}
-
-Future<Exchange> getratetry() async {
-  final response = await http.get(Uri.parse(
-      'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=EUR&to_currency=TRY&apikey=LLBSGY9YH9GJ142T'));
-  return Exchange.fromJson(jsonDecode(response.body));
-}
-
 updateAlbum(double text1, double text2, double text3, double text4,
     double text5, double text6, double text7) async {
   var url;
@@ -127,50 +72,50 @@ class _MyAppState extends State {
   late Future<Account> futureAccount;
   late Future<Rate> futureRate;
   Widget ratetr() {
-    if (ratetry == null) {
+    if (localratetry == null) {
       return const CircularProgressIndicator();
     } else {
-      return Text(ratetry.toStringAsFixed(2));
+      return Text(localratetry.toStringAsFixed(2));
     }
   }
 
   Widget ratepl() {
-    if (ratepln == null) {
+    if (localratepln == null) {
       return const CircularProgressIndicator();
     } else {
-      return Text(ratepln.toStringAsFixed(2));
+      return Text(localratepln.toStringAsFixed(2));
     }
   }
 
   Widget rateus() {
-    if (rateusd == null) {
+    if (localrateusd == null) {
       return const CircularProgressIndicator();
     } else {
-      return Text(rateusd.toStringAsFixed(2));
+      return Text(localrateusd.toStringAsFixed(2));
     }
   }
 
   Widget rateru() {
-    if (raterub == null) {
+    if (localraterub == null) {
       return const CircularProgressIndicator();
     } else {
-      return Text(raterub.toStringAsFixed(2));
+      return Text(localraterub.toStringAsFixed(2));
     }
   }
 
   Widget ratekz() {
-    if (ratekzt == null) {
+    if (localratekzt == null) {
       return const CircularProgressIndicator();
     } else {
-      return Text(ratekzt.toStringAsFixed(2));
+      return Text(localratekzt.toStringAsFixed(2));
     }
   }
 
   Widget ratecz() {
-    if (rateczk == null) {
+    if (localrateczk == null) {
       return const CircularProgressIndicator();
     } else {
-      return Text(rateczk.toStringAsFixed(2));
+      return Text(localrateczk.toStringAsFixed(2));
     }
   }
 
@@ -268,7 +213,7 @@ class _MyAppState extends State {
   }
 
   var text1, text2, text3, text4, text5, text6, text7;
-  var rateczk, ratepln, raterub, ratekzt, rateusd, ratetry, sum;
+  var sum;
   var localrateczk,
       localratepln,
       localraterub,
@@ -312,29 +257,6 @@ class _MyAppState extends State {
     });
   }
 
-  void putcourse(double rateczk, double ratepln, double raterub, double ratekzt,
-      double rateusd, double ratetry) async {
-    await localputcourse(rateczk, ratepln, raterub, ratekzt, rateusd, ratetry);
-    setState(() {});
-  }
-
-  void getcourse() async {
-    var data1 = await getratepln();
-    var data2 = await getraterub();
-    var data3 = await getrateczk();
-    var data4 = await getratekzt();
-    var data5 = await getrateusd();
-    var data6 = await getratetry();
-    setState(() {
-      ratepln = double.parse(data1.rate);
-      raterub = double.parse(data2.rate);
-      rateczk = double.parse(data3.rate);
-      ratekzt = double.parse(data4.rate);
-      rateusd = double.parse(data5.rate);
-      ratetry = double.parse(data6.rate);
-    });
-  }
-
   static int selectedIndex = 0;
 
   void onItemTapped(int index) {
@@ -348,7 +270,6 @@ class _MyAppState extends State {
   void initState() {
     super.initState();
     account();
-    getcourse();
   }
 
   @override
@@ -396,10 +317,6 @@ class _MyAppState extends State {
                         setState(() {
                           update(
                               text1, text2, text3, text4, text5, text6, text7);
-                          if (ratetry != null) {
-                            putcourse(rateczk, ratepln, raterub, ratekzt,
-                                rateusd, ratetry);
-                          }
                         });
                       },
                       child: const Text('Update Data'),
