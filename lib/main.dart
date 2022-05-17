@@ -193,7 +193,7 @@ class _MyAppState extends State {
     } else {
       return ListView(children: [
         const Text("\nCOIN: LTC-USDT\n"),
-        Text("BALANCE\n USD: $balance / COIN: $balanceCoin"),
+        Text("BALANCE\n USD: "+balance.toStringAsFixed(2)+" / COIN: "+balanceCoin.toStringAsFixed(2)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("LAST: $last / CURRENT: "),
           ratecr(),
