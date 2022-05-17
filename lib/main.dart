@@ -193,7 +193,10 @@ class _MyAppState extends State {
     } else {
       return ListView(children: [
         const Text("\nCOIN: LTC-USDT\n"),
-        Text("BALANCE\n USD: "+balance.toStringAsFixed(2)+" / COIN: "+balanceCoin.toStringAsFixed(2)),
+        Text("BALANCE\n USD: " +
+            balance.toStringAsFixed(2) +
+            " / COIN: " +
+            balanceCoin.toStringAsFixed(2)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("LAST: $last / CURRENT: "),
           ratecr(),
@@ -203,11 +206,17 @@ class _MyAppState extends State {
         Text("LOST: $lost / BOTTOM: $bottom "),
         Text("\nSTART TIMESTAMP: $timestampinit "),
         Text("LAST ORDER TIMESTAMP: $timestamp "),
-        Text("PROFIT: "+profit.toStringAsFixed(2) +" / PERCENT: "+percent.toStringAsFixed(2)+"\n"),
+        Text("PROFIT: " +
+            profit.toStringAsFixed(2) +
+            " / PERCENT: " +
+            percent.toStringAsFixed(2) +
+            "\n"),
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           ElevatedButton(
             onPressed: () {
-              setState(() {});
+              setState(() {
+                account();
+              });
             },
             child: const Text('Update Data'),
           ),
@@ -310,7 +319,7 @@ class _MyAppState extends State {
       timestamp,
       timestampinit,
       bottom;
-  var sum,profit,percent;
+  var sum, profit, percent;
   var localrateczk,
       localratepln,
       localraterub,
@@ -342,8 +351,8 @@ class _MyAppState extends State {
       sell = data9.sell;
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
-      profit=sell* 0.116-lost*15*0.116;
-      percent=profit/(balanceCoin*last*2)*100;
+      profit = sell * 0.116 - lost * 15 * 0.116;
+      percent = profit / (balanceCoin * last * 2) * 100;
       localrateczk = data8.rateczk;
       localratepln = data8.ratepln;
       localraterub = data8.raterub;
