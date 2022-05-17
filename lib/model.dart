@@ -37,7 +37,7 @@ class Rate {
   double ratekzt;
   double ratetry;
   double rateusd;
-
+  double rateltc;
   Rate({
     required this.rateczk,
     required this.ratepln,
@@ -45,6 +45,7 @@ class Rate {
     required this.ratekzt,
     required this.ratetry,
     required this.rateusd,
+    required this.rateltc,
   });
 
   factory Rate.fromJson(json) {
@@ -55,6 +56,7 @@ class Rate {
       ratekzt: json['RATEKZT'],
       ratetry: json['RATETRY'],
       rateusd: json['RATEUSD'],
+      rateltc: json['RATELTC'],
     );
   }
 }
@@ -69,6 +71,49 @@ class Exchange {
   factory Exchange.fromJson(json) {
     return Exchange(
       rate: json["Realtime Currency Exchange Rate"]["5. Exchange Rate"],
+    );
+  }
+}
+
+class Balance {
+  double balance;
+  double amend;
+  double balanceCoin;
+  double buy;
+  double sell;
+  double offset;
+  double lost;
+  double last;
+  String timestamp;
+  String timestampinit;
+  double bottom;
+  Balance({
+    required this.balance,
+    required this.amend,
+    required this.balanceCoin,
+    required this.buy,
+    required this.sell,
+    required this.offset,
+    required this.lost,
+    required this.last,
+    required this.timestamp,
+    required this.timestampinit,
+    required this.bottom,
+  });
+
+  factory Balance.fromJson(json) {
+    return Balance(
+      balance: json['BALANCE'],
+      buy: json['BUY'],
+      sell: json['SELL'],
+      last: json['LAST'],
+      balanceCoin: json['BALANCECOIN'],
+      offset: json['OFFSET'],
+      amend: json['AMEND'],
+      lost: json['LOST'],
+      bottom: json['BOTTOM'],
+      timestamp: json['TIMESTAMP'],
+      timestampinit: json['TIMESTAMPINIT'],
     );
   }
 }

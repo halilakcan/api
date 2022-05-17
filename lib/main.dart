@@ -25,6 +25,12 @@ Future<Rate> localgetcourse() async {
   return Rate.fromJson(jsonDecode(response.body));
 }
 
+Future<Balance> getbalance() async {
+  final response = await http.get(Uri.parse(
+      'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json'));
+  return Balance.fromJson(jsonDecode(response.body));
+}
+
 updateAlbum(double text1, double text2, double text3, double text4,
     double text5, double text6, double text7) async {
   var url;
@@ -119,14 +125,94 @@ class _MyAppState extends State {
     }
   }
 
+  Widget ratecr() {
+    if (localrateltc == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return Text(localrateltc.toStringAsFixed(2));
+    }
+  }
+
   Widget total() {
     if (sum == null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [Text("SUM: "), CircularProgressIndicator()],
+        children: const [Text("BALANCE: "), CircularProgressIndicator()],
       );
     } else {
-      return Text("SUM: $sum€");
+      return Text("BALANCE: $sum€");
+    }
+  }
+
+  Widget body() {
+    if (selectedIndex == 0 || selectedIndex == 1) {
+      return ListView(
+        children: [
+          const Text(""),
+          total(),
+          const Text(""),
+          list(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  if (controller1.text != '') {
+                    text1 = double.parse(controller1.text);
+                  }
+                  if (controller2.text != '') {
+                    text2 = double.parse(controller2.text);
+                  }
+                  if (controller3.text != '') {
+                    text3 = double.parse(controller3.text);
+                  }
+                  if (controller4.text != '') {
+                    text4 = double.parse(controller4.text);
+                  }
+                  if (controller5.text != '') {
+                    text5 = double.parse(controller5.text);
+                  }
+                  if (controller6.text != '') {
+                    text6 = double.parse(controller6.text);
+                  }
+                  if (controller7.text != '') {
+                    text7 = double.parse(controller7.text);
+                  }
+                  setState(() {
+                    update(text1, text2, text3, text4, text5, text6, text7);
+                  });
+                },
+                child: const Text('Update Data'),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else if (balance == null) {
+      return const CircularProgressIndicator();
+    } else {
+      return ListView(children: [
+        const Text("\nCOIN: LTC-USDT\n"),
+        Text("BALANCE\n USD: $balance / COIN: $balanceCoin"),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text("LAST: $last / CURRENT: "),
+          ratecr(),
+        ]),
+        Text("\nBUY: $buy / SELL: $sell "),
+        Text("AMEND: $amend / OFFSET: $offset "),
+        Text("LOST: $lost / BOTTOM: $bottom "),
+        Text("\nSTART TIMESTAMP: $timestampinit "),
+        Text("LAST ORDER TIMESTAMP: $timestamp "),
+        Text("PROFIT: "+profit.toStringAsFixed(2) +" / PERCENT: "+percent.toStringAsFixed(2)+"\n"),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {});
+            },
+            child: const Text('Update Data'),
+          ),
+        ]),
+      ]);
     }
   }
 
@@ -213,17 +299,30 @@ class _MyAppState extends State {
   }
 
   var text1, text2, text3, text4, text5, text6, text7;
-  var sum;
+  var balance,
+      amend,
+      balanceCoin,
+      buy,
+      sell,
+      offset,
+      lost,
+      last,
+      timestamp,
+      timestampinit,
+      bottom;
+  var sum,profit,percent;
   var localrateczk,
       localratepln,
       localraterub,
       localratekzt,
       localrateusd,
-      localratetry;
+      localratetry,
+      localrateltc;
+
   void account() async {
     var data7 = await fetchAlbum();
     var data8 = await localgetcourse();
-
+    var data9 = await getbalance();
     setState(() {
       text1 = data7.pln;
       text2 = data7.eur;
@@ -232,12 +331,26 @@ class _MyAppState extends State {
       text5 = data7.kzt;
       text6 = data7.usd;
       text7 = data7.trl;
+      balance = data9.balance;
+      balanceCoin = data9.balanceCoin;
+      amend = data9.amend;
+      bottom = data9.bottom;
+      buy = data9.buy;
+      last = data9.last;
+      lost = data9.lost;
+      offset = data9.offset;
+      sell = data9.sell;
+      timestamp = data9.timestamp;
+      timestampinit = data9.timestampinit;
+      profit=sell* 0.116-lost*15*0.116;
+      percent=profit/(balanceCoin*last*2)*100;
       localrateczk = data8.rateczk;
       localratepln = data8.ratepln;
       localraterub = data8.raterub;
       localratekzt = data8.ratekzt;
       localrateusd = data8.rateusd;
       localratetry = data8.ratetry;
+      localrateltc = data8.rateltc;
       sum = text1 / localratepln +
           text2 +
           text3 / localraterub +
@@ -281,51 +394,9 @@ class _MyAppState extends State {
           title: const Text('Financial Status and Home Investment'),
         ),
         body: DefaultTextStyle(
-          style: Theme.of(context).textTheme.headline4!,
+          style: Theme.of(context).textTheme.headline5!,
           textAlign: TextAlign.center,
-          child: Center(
-            child: ListView(
-              children: [
-                total(),
-                list(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        if (controller1.text != '') {
-                          text1 = double.parse(controller1.text);
-                        }
-                        if (controller2.text != '') {
-                          text2 = double.parse(controller2.text);
-                        }
-                        if (controller3.text != '') {
-                          text3 = double.parse(controller3.text);
-                        }
-                        if (controller4.text != '') {
-                          text4 = double.parse(controller4.text);
-                        }
-                        if (controller5.text != '') {
-                          text5 = double.parse(controller5.text);
-                        }
-                        if (controller6.text != '') {
-                          text6 = double.parse(controller6.text);
-                        }
-                        if (controller7.text != '') {
-                          text7 = double.parse(controller7.text);
-                        }
-                        setState(() {
-                          update(
-                              text1, text2, text3, text4, text5, text6, text7);
-                        });
-                      },
-                      child: const Text('Update Data'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          child: Center(child: body()),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
@@ -336,6 +407,10 @@ class _MyAppState extends State {
             BottomNavigationBarItem(
               icon: Icon(Icons.outbound),
               label: 'Loans',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.code),
+              label: 'Algorithm',
             ),
           ],
           currentIndex: selectedIndex,
