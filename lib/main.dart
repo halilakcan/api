@@ -215,7 +215,8 @@ class _MyAppState extends State {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                account();
+                Timer.periodic(
+                    const Duration(seconds: 15), (Timer t) => account());
               });
             },
             child: const Text('Update Data'),
@@ -283,7 +284,7 @@ class _MyAppState extends State {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Text("USD: "+text6.toStringAsFixed(2)+" / RATE: "),
+            Text("USD: " + text6.toStringAsFixed(2) + " / RATE: "),
             rateus(),
           ]),
           TextField(
@@ -351,7 +352,11 @@ class _MyAppState extends State {
       sell = data9.sell;
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
-      profit = sell *0.5*balanceCoin/3-balanceCoin/3*last*0.0016 - lost * 15 * 0.5*balanceCoin/3-lost*2*balanceCoin*0.001-amend*balanceCoin*last/3*0.0002;
+      profit = sell * 0.5 * balanceCoin / 3 -
+          balanceCoin / 3 * last * 0.0016 -
+          lost * 15 * 0.5 * balanceCoin / 3 -
+          lost * 2 * balanceCoin * 0.001 -
+          amend * balanceCoin * last / 3 * 0.0002;
       percent = profit / (balanceCoin * last * 2) * 100;
       localrateczk = data8.rateczk;
       localratepln = data8.ratepln;
@@ -400,7 +405,7 @@ class _MyAppState extends State {
       title: 'Akcan House Investment',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Financial Status and Home Investment'),
+          title: const Text('Financial Status and Investment'),
         ),
         body: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline5!,
