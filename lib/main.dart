@@ -263,7 +263,7 @@ class _MyAppState extends State {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Text("CZK: $text4 / RATE: "),
+            Text("CZK: "+text4.toStringAsFixed(2)+" / RATE: "),
             ratecz(),
           ]),
           TextField(
