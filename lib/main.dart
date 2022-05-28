@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'model.dart';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,8 +24,15 @@ Future<Rate> localgetcourse() async {
 }
 
 Future<Balance> getbalance() async {
-  final response = await http.get(Uri.parse(
-      'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json'));
+  var url;
+  if (_MyAppState.selectedIndex == 2) {
+    url = Uri.parse(
+       'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
+  } else {
+    url = Uri.parse(
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
+  }
+  final response = await http.get(url);
   return Balance.fromJson(jsonDecode(response.body));
 }
 
@@ -352,11 +357,14 @@ class _MyAppState extends State {
       sell = data9.sell;
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
-      profit = sell * 0.5 * balanceCoin / 3 -
-          balanceCoin / 3 * last * 0.0016 -
-          lost * 15 * 0.5 * balanceCoin / 3 -
+      double factor=3;
+      double lostFactor=13;
+      if(selectedIndex==3) {factor=4;lostFactor=26;}
+      profit = sell * 0.5 * balanceCoin / factor -
+          balanceCoin / factor * last * 0.0016 -
+          lost * lostFactor * 0.5 * balanceCoin / factor -
           lost * 2 * balanceCoin * 0.001 -
-          amend * balanceCoin * last / 3 * 0.0002;
+          amend * balanceCoin * last / factor * 0.0002;
       percent = profit / (balanceCoin * last * 2) * 100;
       localrateczk = data8.rateczk;
       localratepln = data8.ratepln;
@@ -424,10 +432,13 @@ class _MyAppState extends State {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.code),
-              label: 'Algorithm',
+              label: 'Algorithm 3',
             ),
+        BottomNavigationBarItem(icon: Icon(Icons.balance),label: 'Algorithm 4'),
           ],
           currentIndex: selectedIndex,
+          showUnselectedLabels:true,
+          unselectedItemColor:Colors.black, 
           selectedItemColor: Colors.amber,
           onTap: onItemTapped,
         ),
