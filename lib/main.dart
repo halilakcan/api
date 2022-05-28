@@ -264,7 +264,7 @@ class _MyAppState extends State {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Text("CZK: $text4 / RATE: "),
+            Text("CZK: "+text4.toStringAsFixed(2)+" / RATE: "),
             ratecz(),
           ]),
           TextField(
@@ -405,7 +405,7 @@ class _MyAppState extends State {
       title: 'Akcan House Investment',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Financial Status and Investment'),
+          title: const Text('Financial Status and Home Investment'),
         ),
         body: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline5!,
