@@ -27,7 +27,7 @@ Future<Balance> getbalance() async {
   var url;
   if (_MyAppState.selectedIndex == 2) {
     url = Uri.parse(
-       'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
   } else {
     url = Uri.parse(
         'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
@@ -269,7 +269,7 @@ class _MyAppState extends State {
             ),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Text("CZK: "+text4.toStringAsFixed(2)+" / RATE: "),
+            Text("CZK: " + text4.toStringAsFixed(2) + " / RATE: "),
             ratecz(),
           ]),
           TextField(
@@ -357,9 +357,12 @@ class _MyAppState extends State {
       sell = data9.sell;
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
-      double factor=3;
-      double lostFactor=13;
-      if(selectedIndex==3) {factor=4;lostFactor=26;}
+      double factor = 3;
+      double lostFactor = 13;
+      if (selectedIndex == 3) {
+        factor = 4;
+        lostFactor = 26;
+      }
       profit = sell * 0.5 * balanceCoin / factor -
           balanceCoin / factor * last * 0.0016 -
           lost * lostFactor * 0.5 * balanceCoin / factor -
@@ -434,11 +437,12 @@ class _MyAppState extends State {
               icon: Icon(Icons.code),
               label: 'Algorithm 3',
             ),
-        BottomNavigationBarItem(icon: Icon(Icons.balance),label: 'Algorithm 4'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.balance), label: 'Algorithm 4'),
           ],
           currentIndex: selectedIndex,
-          showUnselectedLabels:true,
-          unselectedItemColor:Colors.black, 
+          showUnselectedLabels: true,
+          unselectedItemColor: Colors.black,
           selectedItemColor: Colors.amber,
           onTap: onItemTapped,
         ),
