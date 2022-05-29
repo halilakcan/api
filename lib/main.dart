@@ -358,10 +358,10 @@ class _MyAppState extends State {
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
       double factor = 3;
-      double lostFactor = 13;
+      double lostFactor = 14;
       if (selectedIndex == 3) {
         factor = 4;
-        lostFactor = 26;
+        lostFactor = 27;
       }
       profit = sell * 0.5 * balanceCoin / factor -
           balanceCoin / factor * last * 0.0016 -
