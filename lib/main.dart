@@ -27,10 +27,10 @@ Future<Balance> getbalance() async {
   var url;
   if (_MyAppState.selectedIndex == 2) {
     url = Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
   } else {
     url = Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
   }
   final response = await http.get(url);
   return Balance.fromJson(jsonDecode(response.body));
@@ -357,15 +357,14 @@ class _MyAppState extends State {
       sell = data9.sell;
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
-      double factor = 3;
-      double lostFactor = 14;
-      if (selectedIndex == 3) {
-        factor = 4;
-        lostFactor = 27;
-      }
-      profit = sell * 0.5 * balanceCoin / factor -
+      double factor = 4;
+      double lostFactor = 27;
+      double delta=((last*0.005)*offset+last)*0.005;
+      if(selectedIndex==2) delta=0.5;
+     
+      profit = sell * delta * balanceCoin / factor -
           balanceCoin / factor * last * 0.0016 -
-          lost * lostFactor * 0.5 * balanceCoin / factor -
+          lost * lostFactor * delta * balanceCoin / factor -
           lost * 2 * balanceCoin * 0.001 -
           amend * balanceCoin * last / factor * 0.0002;
       percent = profit / (balanceCoin * last * 2) * 100;
@@ -434,11 +433,11 @@ class _MyAppState extends State {
               label: 'Loans',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.code),
-              label: 'Algorithm 3',
+              icon: Icon(Icons.balance),
+              label: 'Algorithm 4',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.balance), label: 'Algorithm 4'),
+                icon: Icon(Icons.military_tech), label: 'Algorithm 5'),
           ],
           currentIndex: selectedIndex,
           showUnselectedLabels: true,
