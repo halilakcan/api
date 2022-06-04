@@ -198,19 +198,18 @@ class _MyAppState extends State {
     } else {
       return ListView(children: [
         const Text("\nCOIN: LTC-USDT\n"),
-        Text("BALANCE\n USD: " +
-            balance.toStringAsFixed(2) +
-            " / COIN: " +
-            balanceCoin.toStringAsFixed(2)),
+        Text("BALANCE\n USD: " +balance.toStringAsFixed(2) +" / FREE: " + free.toStringAsFixed(2)+" / COIN: " +balanceCoin.toStringAsFixed(2)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("LAST: $last / CURRENT: "),
           ratecr(),
         ]),
+        Text("\nB4: "+orderPrice[0].toStringAsFixed(2) +" / B3: "+orderPrice[1].toStringAsFixed(2) + " / B2: "+orderPrice[2].toStringAsFixed(2) +" / B1: "+orderPrice[3].toStringAsFixed(2)),
+        Text("A1: "+orderPrice[4].toStringAsFixed(2) +" / A2: "+orderPrice[5].toStringAsFixed(2) + " / A3: "+orderPrice[6].toStringAsFixed(2) +" / A4: "+orderPrice[7].toStringAsFixed(2)),
         Text("\nBUY: $buy / SELL: $sell "),
-        Text("AMEND: $amend / OFFSET: $offset "),
+        Text("AMEND: $amend / OFFSET: $offset / DELTA: $delta"),
         Text("LOST: $lost / BOTTOM: $bottom "),
-        Text("\nSTART TIMESTAMP: $timestampinit "),
-        Text("LAST ORDER TIMESTAMP: $timestamp "),
+        Text("\nSTART : $timestampinit "),
+        Text("LAST : $timestamp "),
         Text("PROFIT: " +
             profit.toStringAsFixed(2) +
             " / PERCENT: " +
@@ -314,25 +313,9 @@ class _MyAppState extends State {
   }
 
   var text1, text2, text3, text4, text5, text6, text7;
-  var balance,
-      amend,
-      balanceCoin,
-      buy,
-      sell,
-      offset,
-      lost,
-      last,
-      timestamp,
-      timestampinit,
-      bottom;
-  var sum, profit, percent;
-  var localrateczk,
-      localratepln,
-      localraterub,
-      localratekzt,
-      localrateusd,
-      localratetry,
-      localrateltc;
+  var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom;
+  var sum, profit, percent,delta,orderPrice,free;
+  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc;
 
   void account() async {
     var data7 = await fetchAlbum();
@@ -354,14 +337,14 @@ class _MyAppState extends State {
       last = data9.last;
       lost = data9.lost;
       offset = data9.offset;
+      delta=data9.delta;
+      free=data9.free;
+      orderPrice=data9.orderPrice;
       sell = data9.sell;
       timestamp = data9.timestamp;
       timestampinit = data9.timestampinit;
       double factor = 4;
       double lostFactor = 27;
-      double delta=((last*0.005)*offset+last)*0.005;
-      if(selectedIndex==2) delta=0.5;
-     
       profit = sell * delta * balanceCoin / factor -
           balanceCoin / factor * last * 0.0016 -
           lost * lostFactor * delta * balanceCoin / factor -

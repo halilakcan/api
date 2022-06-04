@@ -87,6 +87,9 @@ class Balance {
   String timestamp;
   String timestampinit;
   double bottom;
+  double delta;
+  double free;
+  List orderPrice;
   Balance({
     required this.balance,
     required this.amend,
@@ -99,6 +102,9 @@ class Balance {
     required this.timestamp,
     required this.timestampinit,
     required this.bottom,
+    required this.delta,
+    required this.free,
+    required this.orderPrice,
   });
 
   factory Balance.fromJson(json) {
@@ -112,8 +118,11 @@ class Balance {
       amend: json['AMEND'],
       lost: json['LOST'],
       bottom: json['BOTTOM'],
+      delta: json['DELTA'],
+      free: json['FREE'],
       timestamp: json['TIMESTAMP'],
       timestampinit: json['TIMESTAMPINIT'],
+      orderPrice: json['ORDERPRICE'],
     );
   }
 }
