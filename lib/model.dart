@@ -84,11 +84,8 @@ class Balance {
   double offset;
   double lost;
   double last;
-  String timestamp;
-  String timestampinit;
-  double bottom;
-  double delta;
-  double free;
+  String timestamp, timestamporder, timestampinit;
+  double bottom, delta, free;
   List orderPrice;
   Balance({
     required this.balance,
@@ -100,6 +97,7 @@ class Balance {
     required this.lost,
     required this.last,
     required this.timestamp,
+    required this.timestamporder,
     required this.timestampinit,
     required this.bottom,
     required this.delta,
@@ -121,6 +119,7 @@ class Balance {
       delta: json['DELTA'],
       free: json['FREE'],
       timestamp: json['TIMESTAMP'],
+      timestamporder: json['TIMESTAMPORDER'],
       timestampinit: json['TIMESTAMPINIT'],
       orderPrice: json['ORDERPRICE'],
     );

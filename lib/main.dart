@@ -200,16 +200,17 @@ class _MyAppState extends State {
         const Text("\nCOIN: LTC-USDT\n"),
         Text("BALANCE\n USD: " +balance.toStringAsFixed(2) +" / FREE: " + free.toStringAsFixed(2)+" / COIN: " +balanceCoin.toStringAsFixed(2)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("LAST: $last / CURRENT: "),
+          Text("LAST: "+last.toStringAsFixed(2)+" / CURRENT: "),
           ratecr(),
         ]),
         Text("\nB4: "+orderPrice[0].toStringAsFixed(2) +" / B3: "+orderPrice[1].toStringAsFixed(2) + " / B2: "+orderPrice[2].toStringAsFixed(2) +" / B1: "+orderPrice[3].toStringAsFixed(2)),
         Text("A1: "+orderPrice[4].toStringAsFixed(2) +" / A2: "+orderPrice[5].toStringAsFixed(2) + " / A3: "+orderPrice[6].toStringAsFixed(2) +" / A4: "+orderPrice[7].toStringAsFixed(2)),
         Text("\nBUY: $buy / SELL: $sell "),
-        Text("AMEND: $amend / OFFSET: $offset / DELTA: $delta"),
+        Text("AMEND: $amend / OFFSET: $offset / DELTA: "+delta.toStringAsFixed(3)),
         Text("LOST: $lost / BOTTOM: $bottom "),
-        Text("\nSTART : $timestampinit "),
-        Text("LAST : $timestamp "),
+        Text("\nSTART: $timestampinit "),
+        Text("ORDER: $timestamporder "),
+        Text("ALIVE: $timestamp "),
         Text("PROFIT: " +
             profit.toStringAsFixed(2) +
             " / PERCENT: " +
@@ -313,7 +314,7 @@ class _MyAppState extends State {
   }
 
   var text1, text2, text3, text4, text5, text6, text7;
-  var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom;
+  var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom,timestamporder;
   var sum, profit, percent,delta,orderPrice,free;
   var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc;
 
@@ -341,7 +342,8 @@ class _MyAppState extends State {
       free=data9.free;
       orderPrice=data9.orderPrice;
       sell = data9.sell;
-      timestamp = data9.timestamp;
+      timestamp = data9.timestamp;      
+      timestamporder = data9.timestamporder;
       timestampinit = data9.timestampinit;
       double factor = 4;
       double lostFactor = 27;
