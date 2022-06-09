@@ -37,7 +37,8 @@ class Rate {
   double ratekzt;
   double ratetry;
   double rateusd;
-  double rateltc;
+  double rateltc, ratedash;
+
   Rate({
     required this.rateczk,
     required this.ratepln,
@@ -46,6 +47,7 @@ class Rate {
     required this.ratetry,
     required this.rateusd,
     required this.rateltc,
+    required this.ratedash,
   });
 
   factory Rate.fromJson(json) {
@@ -57,6 +59,7 @@ class Rate {
       ratetry: json['RATETRY'],
       rateusd: json['RATEUSD'],
       rateltc: json['RATELTC'],
+      ratedash: json['RATEDASH'],
     );
   }
 }
@@ -84,11 +87,12 @@ class Balance {
   double offset;
   double lost;
   double last;
-  String timestamp, timestamporder, timestampinit;
+  String timestamp, timestamporder, timestampinit, coin;
   double bottom, delta, free;
   List orderPrice;
   Balance({
     required this.balance,
+    required this.coin,
     required this.amend,
     required this.balanceCoin,
     required this.buy,
@@ -111,6 +115,7 @@ class Balance {
       buy: json['BUY'],
       sell: json['SELL'],
       last: json['LAST'],
+      coin: json['COIN'],
       balanceCoin: json['BALANCECOIN'],
       offset: json['OFFSET'],
       amend: json['AMEND'],

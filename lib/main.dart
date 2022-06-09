@@ -133,8 +133,10 @@ class _MyAppState extends State {
   Widget ratecr() {
     if (localrateltc == null) {
       return const CircularProgressIndicator();
-    } else {
+    } else if(selectedIndex==2) {
       return Text(localrateltc.toStringAsFixed(2));
+    } else {
+      return Text(localratedash.toStringAsFixed(2));
     }
   }
 
@@ -197,7 +199,7 @@ class _MyAppState extends State {
       return const CircularProgressIndicator();
     } else {
       return ListView(children: [
-        const Text("\nCOIN: LTC-USDT\n"),
+        Text("\nCOIN: "+coin+"-USDT\n"),
         Text("BALANCE\n USD: " +balance.toStringAsFixed(2) +" / FREE: " + free.toStringAsFixed(2)+" / COIN: " +balanceCoin.toStringAsFixed(2)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("LAST: "+last.toStringAsFixed(2)+" / CURRENT: "),
@@ -314,9 +316,9 @@ class _MyAppState extends State {
   }
 
   var text1, text2, text3, text4, text5, text6, text7;
-  var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom,timestamporder;
+  var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom,timestamporder,coin;
   var sum, profit, percent,delta,orderPrice,free;
-  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc;
+  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc,localratedash;
 
   void account() async {
     var data7 = await fetchAlbum();
@@ -334,6 +336,7 @@ class _MyAppState extends State {
       balanceCoin = data9.balanceCoin;
       amend = data9.amend;
       bottom = data9.bottom;
+      coin=data9.coin;
       buy = data9.buy;
       last = data9.last;
       lost = data9.lost;
@@ -360,6 +363,7 @@ class _MyAppState extends State {
       localrateusd = data8.rateusd;
       localratetry = data8.ratetry;
       localrateltc = data8.rateltc;
+      localratedash=data8.ratedash;
       sum = text1 / localratepln +
           text2 +
           text3 / localraterub +
