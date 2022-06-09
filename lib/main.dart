@@ -27,10 +27,10 @@ Future<Balance> getbalance() async {
   var url;
   if (_MyAppState.selectedIndex == 2) {
     url = Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
   } else {
     url = Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
   }
   final response = await http.get(url);
   return Balance.fromJson(jsonDecode(response.body));
@@ -346,7 +346,7 @@ class _MyAppState extends State {
       timestamporder = data9.timestamporder;
       timestampinit = data9.timestampinit;
       double factor = 4;
-      double lostFactor = 27;
+      double lostFactor = 6;
       profit = sell * delta * balanceCoin / factor -
           balanceCoin / factor * last * 0.0016 -
           lost * lostFactor * delta * balanceCoin / factor -
@@ -419,10 +419,10 @@ class _MyAppState extends State {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.balance),
-              label: 'Algorithm 4',
+              label: 'Algorithm 6',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.military_tech), label: 'Algorithm 5'),
+                icon: Icon(Icons.military_tech), label: 'Algorithm 7'),
           ],
           currentIndex: selectedIndex,
           showUnselectedLabels: true,
