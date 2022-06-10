@@ -136,7 +136,7 @@ class _MyAppState extends State {
     } else if(selectedIndex==2) {
       return Text(localrateltc.toStringAsFixed(2));
     } else {
-      return Text(localratedash.toStringAsFixed(2));
+      return Text(localratebtc.toStringAsFixed(2));
     }
   }
 
@@ -318,7 +318,7 @@ class _MyAppState extends State {
   var text1, text2, text3, text4, text5, text6, text7;
   var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom,timestamporder,coin;
   var sum, profit, percent,delta,orderPrice,free;
-  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc,localratedash;
+  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc,localratedash,localratebtc;
 
   void account() async {
     var data7 = await fetchAlbum();
@@ -363,7 +363,8 @@ class _MyAppState extends State {
       localrateusd = data8.rateusd;
       localratetry = data8.ratetry;
       localrateltc = data8.rateltc;
-      localratedash=data8.ratedash;
+      localratedash=data8.ratedash;      
+      localratebtc=data8.ratebtc;
       sum = text1 / localratepln +
           text2 +
           text3 / localraterub +
