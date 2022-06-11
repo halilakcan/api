@@ -37,7 +37,7 @@ class Rate {
   double ratekzt;
   double ratetry;
   double rateusd;
-  double rateltc, ratedash, ratebtc;
+  double rateltc, ratecr2;
 
   Rate({
     required this.rateczk,
@@ -47,8 +47,7 @@ class Rate {
     required this.ratetry,
     required this.rateusd,
     required this.rateltc,
-    required this.ratedash,
-    required this.ratebtc,
+    required this.ratecr2,
   });
 
   factory Rate.fromJson(json) {
@@ -60,8 +59,7 @@ class Rate {
       ratetry: json['RATETRY'],
       rateusd: json['RATEUSD'],
       rateltc: json['RATELTC'],
-      ratedash: json['RATEDASH'],
-      ratebtc: json['RATEBTC'],
+      ratecr2: json['RATECR2'],
     );
   }
 }
