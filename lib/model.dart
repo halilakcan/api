@@ -37,7 +37,7 @@ class Rate {
   double ratekzt;
   double ratetry;
   double rateusd;
-  double rateltc, ratecr2;
+  double ratecr1, ratecr2;
 
   Rate({
     required this.rateczk,
@@ -46,7 +46,7 @@ class Rate {
     required this.ratekzt,
     required this.ratetry,
     required this.rateusd,
-    required this.rateltc,
+    required this.ratecr1,
     required this.ratecr2,
   });
 
@@ -58,7 +58,7 @@ class Rate {
       ratekzt: json['RATEKZT'],
       ratetry: json['RATETRY'],
       rateusd: json['RATEUSD'],
-      rateltc: json['RATELTC'],
+      ratecr1: json['RATECR1'],
       ratecr2: json['RATECR2'],
     );
   }

@@ -131,10 +131,10 @@ class _MyAppState extends State {
   }
 
   Widget ratecr() {
-    if (localrateltc == null) {
+    if (localratecr1 == null) {
       return const CircularProgressIndicator();
     } else if(selectedIndex==2) {
-      return Text(localrateltc.toStringAsFixed(2));
+      return Text(localratecr1.toStringAsFixed(2));
     } else {
       return Text(localratecr2.toStringAsFixed(2));
     }
@@ -318,7 +318,7 @@ class _MyAppState extends State {
   var text1, text2, text3, text4, text5, text6, text7;
   var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom,timestamporder,coin;
   var sum, profit, percent,delta,orderPrice,free;
-  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localrateltc,localratecr2;
+  var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localratecr1,localratecr2;
 
   void account() async {
     var data7 = await fetchAlbum();
@@ -362,7 +362,7 @@ class _MyAppState extends State {
       localratekzt = data8.ratekzt;
       localrateusd = data8.rateusd;
       localratetry = data8.ratetry;
-      localrateltc = data8.rateltc;
+      localratecr1 = data8.ratecr1;
       localratecr2=data8.ratecr2;      
       sum = text1 / localratepln +
           text2 +
