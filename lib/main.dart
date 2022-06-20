@@ -2,7 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'model.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:http/http.dart' as http;
+
+Future<void> playSell() async {
+    AudioPlayer cache = AudioPlayer();
+    return await cache.play(AssetSource("message-ringtone-magic.mp3")); 
+}
+Future<void> playBuy() async {
+    AudioPlayer cache = AudioPlayer();
+    return await cache.play(AssetSource("deduction-588.mp3")); 
+}
 
 Future<Account> fetchAlbum() async {
   var url;
@@ -200,7 +210,7 @@ class _MyAppState extends State {
     } else {
       return ListView(children: [
         Text("\nCOIN: "+coin+"-USDT\n"),
-        Text("BALANCE\n USD: " +balance.toStringAsFixed(2) +" / FREE: " + free.toStringAsFixed(2)+" / COIN: " +balanceCoin.toStringAsFixed(2)),
+        Text("BALANCE\n USD: " +balance.toStringAsFixed(2) +" / FREE: " + free.toStringAsFixed(2)+" / COIN: " +balanceCoin.toStringAsFixed(3)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("LAST: "+last.toStringAsFixed(2)+" / CURRENT: "),
           ratecr(),
@@ -317,7 +327,7 @@ class _MyAppState extends State {
 
   var text1, text2, text3, text4, text5, text6, text7;
   var balance,amend,balanceCoin,buy,sell,offset,lost,last,timestamp,timestampinit,bottom,timestamporder,coin;
-  var sum, profit, percent,delta,orderPrice,free;
+  var sum, profit, percent,delta,orderPrice,free,oldSell,oldBuy;
   var localrateczk,localratepln,localraterub,localratekzt,localrateusd,localratetry,localratecr1,localratecr2;
 
   void account() async {
@@ -337,14 +347,18 @@ class _MyAppState extends State {
       amend = data9.amend;
       bottom = data9.bottom;
       coin=data9.coin;
-      buy = data9.buy;
       last = data9.last;
       lost = data9.lost;
       offset = data9.offset;
       delta=data9.delta;
       free=data9.free;
       orderPrice=data9.orderPrice;
+      if(sell!=null){oldSell=sell;}
       sell = data9.sell;
+      if(selectedIndex==3){if(sell!=oldSell){playSell();}}
+      if(buy!=null){oldBuy=buy;}
+      buy = data9.buy;
+      if(selectedIndex==3){if(buy!=oldBuy){playBuy();}}
       timestamp = data9.timestamp;      
       timestamporder = data9.timestamporder;
       timestampinit = data9.timestampinit;
