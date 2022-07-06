@@ -7,11 +7,11 @@ import 'package:http/http.dart' as http;
 
 Future<void> playSell() async {
     AudioPlayer cache = AudioPlayer();
-    return await cache.play(AssetSource("message-ringtone-magic.mp3")); 
+    return await cache.play(AssetSource("message-ringtone-magic.ogg")); 
 }
 Future<void> playBuy() async {
     AudioPlayer cache = AudioPlayer();
-    return await cache.play(AssetSource("deduction-588.mp3")); 
+    return await cache.play(AssetSource("deduction-588.ogg")); 
 }
 
 Future<Account> fetchAlbum() async {
@@ -143,7 +143,7 @@ class _MyAppState extends State {
   Widget ratecr() {
     if (localratecr1 == null) {
       return const CircularProgressIndicator();
-    } else if(selectedIndex==2) {
+    } else if(selectedIndex==3) {
       return Text(localratecr1.toStringAsFixed(2));
     } else {
       return Text(localratecr2.toStringAsFixed(2));
