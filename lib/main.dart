@@ -37,10 +37,10 @@ Future<Balance> getbalance() async {
   var url;
   if (_MyAppState.selectedIndex == 2) {
     url = Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
   } else {
     url = Uri.parse(
-        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo2.json');
+        'https://angular-argon-331323-default-rtdb.firebaseio.com/algo.json');
   }
   final response = await http.get(url);
   return Balance.fromJson(jsonDecode(response.body));
@@ -355,15 +355,15 @@ class _MyAppState extends State {
       orderPrice=data9.orderPrice;
       if(sell!=null){oldSell=sell;}
       sell = data9.sell;
-      if(selectedIndex==3){if(sell!=oldSell){playSell();}}
+      if(selectedIndex==2){if(sell!=oldSell){playSell();}}
       if(buy!=null){oldBuy=buy;}
       buy = data9.buy;
-      if(selectedIndex==3){if(buy!=oldBuy){playBuy();}}
+      if(selectedIndex==2){if(buy!=oldBuy){playBuy();}}
       timestamp = data9.timestamp;      
       timestamporder = data9.timestamporder;
       timestampinit = data9.timestampinit;
       double factor = 4;
-      double lostFactor = 6;
+      double lostFactor = 3;
       profit = sell * delta * balanceCoin / factor -
           balanceCoin / factor * last * 0.0016 -
           lost * lostFactor * delta * balanceCoin / factor -
@@ -437,10 +437,10 @@ class _MyAppState extends State {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.balance),
-              label: 'Algorithm 6',
+              label: 'Algorithm 8',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.military_tech), label: 'Algorithm 7'),
+                icon: Icon(Icons.military_tech), label: 'Algorithm 9'),
           ],
           currentIndex: selectedIndex,
           showUnselectedLabels: true,
